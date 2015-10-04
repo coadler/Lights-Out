@@ -6,4 +6,4 @@ It is very simple, and extremely unoptimized.
 
 Currently working on AI to complete the game for you, so check back often.
 
-Note: there are two files, one that will run in terminal, and one that I currently use to run in Google AppEngine [here](lights-outg.appspot.com).
+Note: there are two files, one that will run in terminal, and one that I currently use to run in Google AppEngine [here](http://lights-outg.appspot.com).
