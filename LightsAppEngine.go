@@ -87,6 +87,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
     urlToTest := url[1:]
     length := utf8.RuneCountInString(urlToTest)
     if err == nil {
+      if urlToTest == "reset" {
+        Reset()
+      }
     	if length == 0 {
 	    	fmt.Fprintf(w, head)
 	   		lights1 := State{l11, l12, l13, l14, l15, "11", "12", "13", "14", "15"}
@@ -268,7 +271,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	   		tmpl.Execute(w, lights4)
 	   		tmpl.Execute(w, lights5)
 	   		fmt.Fprintf(w, tail)
-   			fmt.Fprintf(w, "You just pressed square %v-%v", url[1:2], url[2:3])
+        if urlToTest != "reset" {
+   			    fmt.Fprintf(w, "You just pressed square %v-%v", url[1:2], url[2:3])
+        }
    		}
     }
     if err != nil {
@@ -297,6 +302,44 @@ func RandColor() (string){
 	return toReturn
 }
 
+func RandColorP(block *string) {
+	r := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
+	colorNumber := r.Intn(2) + 1;
+
+	switch (colorNumber) {
+		default: 	*block = yellow //"http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
+		case 1:		*block = yellow //"http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
+		case 2:		*block = black  //"http://cadler.co/wp-content/uploads/2015/09/black-e1442941689285.jpg"
+	}
+}
+
+func Reset() {
+  	RandColorP(&l11)
+    RandColorP(&l12)
+    RandColorP(&l13)
+    RandColorP(&l14)
+    RandColorP(&l15)
+    RandColorP(&l21)
+    RandColorP(&l22)
+    RandColorP(&l23)
+    RandColorP(&l24)
+    RandColorP(&l25)
+    RandColorP(&l31)
+    RandColorP(&l32)
+    RandColorP(&l33)
+    RandColorP(&l34)
+    RandColorP(&l35)
+    RandColorP(&l41)
+    RandColorP(&l42)
+    RandColorP(&l43)
+    RandColorP(&l44)
+    RandColorP(&l45)
+    RandColorP(&l51)
+    RandColorP(&l52)
+    RandColorP(&l53)
+    RandColorP(&l54)
+    RandColorP(&l55)
+}
 
 func init() {
 
@@ -345,5 +388,5 @@ func init() {
 		</div>
 */
 
-// goapp deploy -application lights-game app.yaml
+// goapp deploy -application lights-outg app.yaml
 // export PATH=/usr/local/go/src/sdk/go_appengine:$PATH
