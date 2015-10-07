@@ -14,10 +14,9 @@ type State struct {
 	L1, L2, L3, L4, L5, N1, N2, N3, N4, N5 string
 }
 
-
-const yellow = "http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
-const black = "http://cadler.co/wp-content/uploads/2015/09/black-e1442941689285.jpg"
-const green = "http://cadler.co/wp-content/uploads/2015/10/green-e1443791954640.png"
+var yellow string = "http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
+var black string = "http://cadler.co/wp-content/uploads/2015/09/black-e1442941689285.jpg"
+var green string = "http://cadler.co/wp-content/uploads/2015/10/green-e1443791954640.png"
 
 var (
 	l11 string = RandColor()
@@ -79,6 +78,8 @@ const body = `
 		</div>
 `
 
+const solveHTML = `<input type=button onClick="parent.location='solve'" value='Solve row'>`
+
 const tail = `
 	</body>
 </html>
@@ -103,161 +104,162 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	   		tmpl.Execute(w, lights3)
 	   		tmpl.Execute(w, lights4)
 	   		tmpl.Execute(w, lights5)
+        fmt.Fprintf(w, solveHTML)
 	   		fmt.Fprintf(w, tail)
    		}
 
-   		if length > 1 {
+   		if length > 1 && urlToTest != "solve" {
    			switch urlToTest[0:1] {
    				default:
    				case "1":
    					switch urlToTest[1:2] {
    						default:
    						case "1":
-   							SwitchColor(&l11)
-   							SwitchColor(&l12)
-   							SwitchColor(&l21)
+   							SwitchColor(&l11, true)
+   							SwitchColor(&l12, false)
+   							SwitchColor(&l21, false)
 		   				case "2":
-		   					SwitchColor(&l11)
-		   					SwitchColor(&l12)
-		   					SwitchColor(&l13)
-		   					SwitchColor(&l22)
+		   					SwitchColor(&l11, false)
+		   					SwitchColor(&l12, true)
+		   					SwitchColor(&l13, false)
+		   					SwitchColor(&l22, false)
 		   				case "3":
-		   					SwitchColor(&l12)
-		   					SwitchColor(&l13)
-		   					SwitchColor(&l14)
-		   					SwitchColor(&l23)
+		   					SwitchColor(&l12, false)
+		   					SwitchColor(&l13, true)
+		   					SwitchColor(&l14, false)
+		   					SwitchColor(&l23, false)
 		   				case "4":
-		   					SwitchColor(&l13)
-		   					SwitchColor(&l14)
-		   					SwitchColor(&l15)
-		   					SwitchColor(&l24)
+		   					SwitchColor(&l13, false)
+		   					SwitchColor(&l14, true)
+		   					SwitchColor(&l15, false)
+		   					SwitchColor(&l24, false)
 		   				case "5":
-		   					SwitchColor(&l14)
-		   					SwitchColor(&l15)
-		   					SwitchColor(&l25)
+		   					SwitchColor(&l14, false)
+		   					SwitchColor(&l15, true)
+		   					SwitchColor(&l25, false)
    					}
    				case "2":
    					switch urlToTest[1:2] {
    						default:
    						case "1":
-   							SwitchColor(&l11)
-   							SwitchColor(&l21)
-   							SwitchColor(&l31)
-   							SwitchColor(&l22)
+   							SwitchColor(&l11, false)
+   							SwitchColor(&l21, true)
+   							SwitchColor(&l31, false)
+   							SwitchColor(&l22, false)
 		   				case "2":
-		   					SwitchColor(&l12)
-		   					SwitchColor(&l21)
-		   					SwitchColor(&l22)
-		   					SwitchColor(&l23)
-		   					SwitchColor(&l32)
+		   					SwitchColor(&l12, false)
+		   					SwitchColor(&l21, false)
+		   					SwitchColor(&l22, true)
+		   					SwitchColor(&l23, false)
+		   					SwitchColor(&l32, false)
 		   				case "3":
-		   					SwitchColor(&l13)
-		   					SwitchColor(&l22)
-		   					SwitchColor(&l23)
-		   					SwitchColor(&l24)
-		   					SwitchColor(&l33)
+		   					SwitchColor(&l13, false)
+		   					SwitchColor(&l22, false)
+		   					SwitchColor(&l23, true)
+		   					SwitchColor(&l24, false)
+		   					SwitchColor(&l33, false)
 		   				case "4":
-		   					SwitchColor(&l14)
-		   					SwitchColor(&l23)
-		   					SwitchColor(&l24)
-		   					SwitchColor(&l25)
-		   					SwitchColor(&l34)
+		   					SwitchColor(&l14, false)
+		   					SwitchColor(&l23, false)
+		   					SwitchColor(&l24, true)
+		   					SwitchColor(&l25, false)
+		   					SwitchColor(&l34, false)
 		   				case "5":
-		   					SwitchColor(&l24)
-		   					SwitchColor(&l25)
-		   					SwitchColor(&l15)
-		   					SwitchColor(&l35)
+		   					SwitchColor(&l24, false)
+		   					SwitchColor(&l25, true)
+		   					SwitchColor(&l15, false)
+		   					SwitchColor(&l35, false)
    					}
    				case "3":
    					switch urlToTest[1:2] {
    						default:
    						case "1":
-   							SwitchColor(&l21)
-   							SwitchColor(&l31)
-   							SwitchColor(&l32)
-   							SwitchColor(&l41)
+   							SwitchColor(&l21, false)
+   							SwitchColor(&l31, true)
+   							SwitchColor(&l32, false)
+   							SwitchColor(&l41, false)
 		   				case "2":
-		   					SwitchColor(&l22)
-		   					SwitchColor(&l31)
-		   					SwitchColor(&l32)
-		   					SwitchColor(&l33)
-		   					SwitchColor(&l42)
+		   					SwitchColor(&l22, false)
+		   					SwitchColor(&l31, false)
+		   					SwitchColor(&l32, true)
+		   					SwitchColor(&l33, false)
+		   					SwitchColor(&l42, false)
 		   				case "3":
-		   					SwitchColor(&l23)
-		   					SwitchColor(&l32)
-		   					SwitchColor(&l33)
-		   					SwitchColor(&l34)
-		   					SwitchColor(&l43)
+		   					SwitchColor(&l23, false)
+		   					SwitchColor(&l32, false)
+		   					SwitchColor(&l33, true)
+		   					SwitchColor(&l34, false)
+		   					SwitchColor(&l43, false)
 		   				case "4":
-		   					SwitchColor(&l24)
-		   					SwitchColor(&l33)
-		   					SwitchColor(&l34)
-		   					SwitchColor(&l35)
-		   					SwitchColor(&l44)
+		   					SwitchColor(&l24, false)
+		   					SwitchColor(&l33, false)
+		   					SwitchColor(&l34, true)
+		   					SwitchColor(&l35, false)
+		   					SwitchColor(&l44, false)
 		   				case "5":
-		   					SwitchColor(&l34)
-		   					SwitchColor(&l35)
-		   					SwitchColor(&l25)
-		   					SwitchColor(&l45)
+		   					SwitchColor(&l34, false)
+		   					SwitchColor(&l35, true)
+		   					SwitchColor(&l25, false)
+		   					SwitchColor(&l45, false)
    					}
    				case "4":
    					switch urlToTest[1:2] {
    						default:
    						case "1":
-   							SwitchColor(&l31)
-   							SwitchColor(&l41)
-   							SwitchColor(&l42)
-   							SwitchColor(&l51)
+   							SwitchColor(&l31, false)
+   							SwitchColor(&l41, true)
+   							SwitchColor(&l42, false)
+   							SwitchColor(&l51, false)
 		   				case "2":
-		   					SwitchColor(&l32)
-		   					SwitchColor(&l41)
-		   					SwitchColor(&l42)
-		   					SwitchColor(&l43)
-		   					SwitchColor(&l52)
+		   					SwitchColor(&l32, false)
+		   					SwitchColor(&l41, false)
+		   					SwitchColor(&l42, true)
+		   					SwitchColor(&l43, false)
+		   					SwitchColor(&l52, false)
 		   				case "3":
-		   					SwitchColor(&l33)
-		   					SwitchColor(&l42)
-		   					SwitchColor(&l43)
-		   					SwitchColor(&l44)
-		   					SwitchColor(&l53)
+		   					SwitchColor(&l33, false)
+		   					SwitchColor(&l42, false)
+		   					SwitchColor(&l43, true)
+		   					SwitchColor(&l44, false)
+		   					SwitchColor(&l53, false)
 		   				case "4":
-		   					SwitchColor(&l34)
-		   					SwitchColor(&l43)
-		   					SwitchColor(&l44)
-		   					SwitchColor(&l45)
-		   					SwitchColor(&l54)
+		   					SwitchColor(&l34, false)
+		   					SwitchColor(&l43, false)
+		   					SwitchColor(&l44, true)
+		   					SwitchColor(&l45, false)
+		   					SwitchColor(&l54, false)
 		   				case "5":
-		   					SwitchColor(&l44)
-		   					SwitchColor(&l45)
-		   					SwitchColor(&l35)
-		   					SwitchColor(&l55)
+		   					SwitchColor(&l44, false)
+		   					SwitchColor(&l45, true)
+		   					SwitchColor(&l35, false)
+		   					SwitchColor(&l55, false)
    					}
    				case "5":
    					switch urlToTest[1:2] {
    						default:
    						case "1":
-   							SwitchColor(&l41)
-   							SwitchColor(&l51)
-   							SwitchColor(&l52)
+   							SwitchColor(&l41, false)
+   							SwitchColor(&l51, true)
+   							SwitchColor(&l52, false)
 		   				case "2":
-		   					SwitchColor(&l42)
-		   					SwitchColor(&l51)
-		   					SwitchColor(&l52)
-		   					SwitchColor(&l53)
+		   					SwitchColor(&l42, false)
+		   					SwitchColor(&l51, false)
+		   					SwitchColor(&l52, true)
+		   					SwitchColor(&l53, false)
 		   				case "3":
-		   					SwitchColor(&l43)
-		   					SwitchColor(&l52)
-		   					SwitchColor(&l53)
-		   					SwitchColor(&l54)
+		   					SwitchColor(&l43, false)
+		   					SwitchColor(&l52, false)
+		   					SwitchColor(&l53, true)
+		   					SwitchColor(&l54, false)
 		   				case "4":
-		   					SwitchColor(&l44)
-		   					SwitchColor(&l53)
-		   					SwitchColor(&l54)
-		   					SwitchColor(&l55)
+		   					SwitchColor(&l44, false)
+		   					SwitchColor(&l53, false)
+		   					SwitchColor(&l54, true)
+		   					SwitchColor(&l55, false)
 		   				case "5":
-		   					SwitchColor(&l45)
-		   					SwitchColor(&l54)
-		   					SwitchColor(&l55)
+		   					SwitchColor(&l45, false)
+		   					SwitchColor(&l54, false)
+		   					SwitchColor(&l55, true)
    					}
    			}
 	    	fmt.Fprintf(w, head)
@@ -272,24 +274,43 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	   		tmpl.Execute(w, lights4)
 	   		tmpl.Execute(w, lights5)
    			fmt.Fprintf(w, "You just pressed square %v-%v", url[1:2], url[2:3])
+        fmt.Fprintf(w, solveHTML)
 	   		fmt.Fprintf(w, tail)
    		}
+      if urlToTest == "solve" {
+        Solver()
+        fmt.Fprintf(w, head)
+        lights1 := State{l11, l12, l13, l14, l15, "11", "12", "13", "14", "15"}
+        lights2 := State{l21, l22, l23, l24, l25, "21", "22", "23", "24", "25"}
+        lights3 := State{l31, l32, l33, l34, l35, "31", "32", "33", "34", "35"}
+        lights4 := State{l41, l42, l43, l44, l45, "41", "42", "43", "44", "45"}
+        lights5 := State{l51, l52, l53, l54, l55, "51", "52", "53", "54", "55"}
+        tmpl.Execute(w, lights1)
+        tmpl.Execute(w, lights2)
+        tmpl.Execute(w, lights3)
+        tmpl.Execute(w, lights4)
+        tmpl.Execute(w, lights5)
+        fmt.Fprintf(w, solveHTML)
+        fmt.Fprintf(w, tail)
+      }
     }
     if err != nil {
         panic(err)
     }
 }
 
-func SwitchColor(color *string) {
+func SwitchColor(color *string, switchGreen bool) {
 	if *color == yellow {
 		*color = black
 	} else if *color == black {
 		*color = yellow
-	}/* else {
+	} else {
 		if switchGreen {
-			*color = black
+			if *color == green {
+        *color = black
+      }
 		}
-	}*/
+	}
 }
 
 func RandColor() (string){
@@ -304,35 +325,184 @@ func RandColor() (string){
 	}
 	return toReturn
 }
-/*
-func Solver(val1 bool, val2 bool, val3 bool, val 4 bool, val5 bool) {
-	var row1 []string = {l11, l12, l13, l14, l15}
-	var row2 []string = {l21, l22, l23, l24, l25}
-	var row3 []string = {l31, l32, l33, l34, l35}
-	var row4 []string = {l41, l42, l43, l44, l45}
-	var row5 []string = {l51, l52, l53, l54, l55}
-	if val1 {
+
+func FindRow() int{
+  row1 := []string{l11, l12, l13, l14, l15}
+  row2 := []string{l21, l22, l23, l24, l25}
+  row3 := []string{l31, l32, l33, l34, l35}
+  row4 := []string{l41, l42, l43, l44, l45}
+  row5 := []string{l51, l52, l53, l54, l55}
+  var toReturn int
+  yellowCount1, yellowCount2, yellowCount3, yellowCount4, yellowCount5 := 0, 0, 0, 0, 0
+    for i := 0; i < 5; i++ {
+      if row1[i] == yellow {
+        toReturn = 1
+        fmt.Println("FindRow = 1")
+        yellowCount1++
+      }
+      if i == 4 {
+        continue RowLoop2
+      }
+    }
+  RowLoop2:
+    if yellowCount1 == 0 {
+      for i := 0; i < 5; i++ {
+        if row2[i] == yellow {
+          toReturn = 2
+          fmt.Println("FindRow = 2")
+          yellowCount2++
+        }
+      }
+    }
+  RowLoop3:
+    for i := 0; i < 5; i++ {
+      if row3[i] == yellow {
+        toReturn = 3
+        fmt.Println("FindRow = 3")
+        break
+      }
+  }
+  RowLoop4:
+    for i := 0; i < 5; i++ {
+      if row4[i] == yellow {
+        toReturn = 4
+        fmt.Println("FindRow = 4")
+        break
+      }
+  }
+  RowLoop5:
+    for i := 0; i < 5; i++ {
+      if row5[i] == yellow {
+        toReturn = 5
+        fmt.Println("FindRow = 5")
+        break
+      }
+  }
+
+  return toReturn
+}
+
+func Solver() {
+  row := FindRow()
+  row1 := []string{l11, l12, l13, l14, l15}
+  row2 := []string{l21, l22, l23, l24, l25}
+  row3 := []string{l31, l32, l33, l34, l35}
+  row4 := []string{l41, l42, l43, l44, l45}
+  row5 := []string{l51, l52, l53, l54, l55}
+  l12, l14, l15 := &l12, &l14, &l15
+  l21, l22, l23, l24, l25 := &l21, &l22, &l23, &l24, &l25
+  l31, l32, l33, l34, l35 := &l31, &l32, &l33, &l34, &l35
+  l41, l42, l43, l44, l45 := &l41, &l42, &l43, &l44, &l45
+  l51, l52, l53, l54, l55 := &l51, &l52, &l53, &l54, &l55
+  //yellow := &yellow
+	if row == 1 {
 		for i := 0; i < 5; i++ {
-			if row1[i] = yellow {
+			if row1[i] == yellow {
 				switch i {
 					default:
-						break
+						fmt.Println("failed in row 1")
 					case 0:
-						*l11 = green
+						*l21 = green
 					case 1:
-						*l12 = green
+						*l22 = green
 					case 2:
-						*l13 = green
+						*l23 = green
 					case 3:
-						*l14 = green
+						*l24 = green
 					case 4:
-						*l15 = green
+						*l25 = green
 				}
 			}
 		}
-	}	
+	}
+  if row == 2 {
+		for i := 0; i < 5; i++ {
+			if row2[i] == yellow {
+				switch i {
+					default:
+						fmt.Println("failed in row 2")
+					case 0:
+						*l31 = green
+					case 1:
+						*l32 = green
+					case 2:
+						*l33 = green
+					case 3:
+						*l34 = green
+					case 4:
+						*l35 = green
+				}
+			}
+		}
+	}
+  if row == 3 {
+		for i := 0; i < 5; i++ {
+			if row3[i] == yellow {
+				switch i {
+					default:
+						fmt.Println("failed in row 3")
+					case 0:
+						*l41 = green
+					case 1:
+						*l42 = green
+					case 2:
+						*l43 = green
+					case 3:
+						*l44 = green
+					case 4:
+						*l45 = green
+				}
+			}
+		}
+	}
+  if row == 4 {
+		for i := 0; i < 5; i++ {
+			if row4[i] == yellow {
+				switch i {
+					default:
+						fmt.Println("failed in row 4")
+					case 0:
+						*l51 = green
+					case 1:
+						*l52 = green
+					case 2:
+						*l53 = green
+					case 3:
+						*l54 = green
+					case 4:
+						*l55 = green
+				}
+			}
+		}
+	}
+  if row == 5 {
+		for i := 0; i < 5; i++ {
+			if row5[i] == yellow {
+        if i == 0 {
+          *l14 = green
+          *l15 = green
+          break
+        }
+        if i == 1 {
+          *l12 = green
+          *l15 = green
+          break
+        }
+        if i == 2 {
+          *l14 = green
+          break
+        }
+        if (i == 4) || (i == 5) {
+          fmt.Println("CANNOT BE SOLVED")
+        }
+			}
+		}
+	}
+  if (row != 1) && (row != 2) && (row != 3) && (row != 4) && (row != 5) {
+    fmt.Println("the problem is the row finder")
+  }
 }
-*/
+
 func main() {
     http.HandleFunc("/", Index)
     http.HandleFunc("/.*", Index)
