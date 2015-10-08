@@ -16,7 +16,9 @@ type State struct {
 
 var yellow string = "http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
 var black string = "http://cadler.co/wp-content/uploads/2015/09/black-e1442941689285.jpg"
-var green string = "http://cadler.co/wp-content/uploads/2015/10/green-e1443791954640.png"
+//var green string = "http://cadler.co/wp-content/uploads/2015/10/green-e1443791954640.png"
+var blackGreen string = "http://cadler.co/wp-content/uploads/2015/10/blackGreen.png"
+var yellowGreen string = "http://cadler.co/wp-content/uploads/2015/10/yellowGreen.png"
 
 var (
 	l11 string = RandColor()
@@ -304,13 +306,17 @@ func SwitchColor(color *string, switchGreen bool) {
 		*color = black
 	} else if *color == black {
 		*color = yellow
-	} else {
-		if switchGreen {
-			if *color == green {
-        *color = black
-      }
-		}
-	}
+	} else if *color == yellowGreen {
+    *color = blackGreen
+	} else if *color == blackGreen {
+    *color = yellowGreen
+  } else if (*color == yellowGreen) && (switchGreen == true) {
+    *color = black
+  } else if (*color == blackGreen) && (switchGreen == true) {
+    *color = yellow
+  } else {
+    fmt.Println("Failed to switch color")
+  }
 }
 
 func RandColor() (string){
@@ -327,58 +333,70 @@ func RandColor() (string){
 }
 
 func FindRow() int{
-  row1 := []string{l11, l12, l13, l14, l15}
-  row2 := []string{l21, l22, l23, l24, l25}
-  row3 := []string{l31, l32, l33, l34, l35}
-  row4 := []string{l41, l42, l43, l44, l45}
-  row5 := []string{l51, l52, l53, l54, l55}
+  row1 := []string{l15, l14, l13, l12, l11}
+  row2 := []string{l25, l24, l23, l22, l21}
+  row3 := []string{l35, l34, l33, l32, l31}
+  row4 := []string{l45, l44, l43, l42, l41}
+  row5 := []string{l55, l54, l53, l52, l51}
   var toReturn int
   yellowCount1, yellowCount2, yellowCount3, yellowCount4, yellowCount5 := 0, 0, 0, 0, 0
-    for i := 0; i < 5; i++ {
-      if row1[i] == yellow {
-        toReturn = 1
-        fmt.Println("FindRow = 1")
-        yellowCount1++
-      }
-      if i == 4 {
-        continue RowLoop2
-      }
+  for i := 4; i >= 0; i-- {
+    if row1[i] == yellow {
+      //toReturn = 1
+      //fmt.Println("FindRow = 1")
+      yellowCount1++
+      break
     }
-  RowLoop2:
-    if yellowCount1 == 0 {
-      for i := 0; i < 5; i++ {
-        if row2[i] == yellow {
-          toReturn = 2
-          fmt.Println("FindRow = 2")
-          yellowCount2++
+  }
+  for i := 4; i >= 0; i-- {
+    if row2[i] == yellow {
+      //toReturn = 2
+      //fmt.Println("FindRow = 2")
+      yellowCount2++
+      break
+    }
+  }
+  for i := 4; i >= 0; i-- {
+    if row3[i] == yellow {
+      //toReturn = 3
+      //fmt.Println("FindRow = 3")
+      yellowCount3++
+      break
+    }
+  }
+  for i := 4; i >= 0; i-- {
+    if row4[i] == yellow {
+      //toReturn = 4
+      //fmt.Println("FindRow = 4")
+      yellowCount4++
+      break
+    }
+  }
+  for i := 4; i >= 0; i-- {
+    if row5[i] == yellow {
+      //toReturn = 5
+      //fmt.Println("FindRow = 5")
+      yellowCount5++
+      break
+    }
+  }
+  if yellowCount1 != 0 {
+    toReturn = 1
+  } else {
+    if yellowCount2 != 0 {
+      toReturn = 2
+    } else {
+      if yellowCount3 != 0 {
+        toReturn = 3
+      } else {
+        if yellowCount4 != 0 {
+          toReturn = 4
+        } else {
+          toReturn = 5
         }
       }
     }
-  RowLoop3:
-    for i := 0; i < 5; i++ {
-      if row3[i] == yellow {
-        toReturn = 3
-        fmt.Println("FindRow = 3")
-        break
-      }
   }
-  RowLoop4:
-    for i := 0; i < 5; i++ {
-      if row4[i] == yellow {
-        toReturn = 4
-        fmt.Println("FindRow = 4")
-        break
-      }
-  }
-  RowLoop5:
-    for i := 0; i < 5; i++ {
-      if row5[i] == yellow {
-        toReturn = 5
-        fmt.Println("FindRow = 5")
-        break
-      }
-  }
-
   return toReturn
 }
 
@@ -394,7 +412,6 @@ func Solver() {
   l31, l32, l33, l34, l35 := &l31, &l32, &l33, &l34, &l35
   l41, l42, l43, l44, l45 := &l41, &l42, &l43, &l44, &l45
   l51, l52, l53, l54, l55 := &l51, &l52, &l53, &l54, &l55
-  //yellow := &yellow
 	if row == 1 {
 		for i := 0; i < 5; i++ {
 			if row1[i] == yellow {
@@ -402,15 +419,35 @@ func Solver() {
 					default:
 						fmt.Println("failed in row 1")
 					case 0:
-						*l21 = green
+            if *l21 == yellow {
+              *l21 = yellowGreen
+            } else {
+              *l21 = blackGreen
+            }
 					case 1:
-						*l22 = green
+            if *l22 == yellow {
+              *l22 = yellowGreen
+            } else {
+              *l22 = blackGreen
+            }
 					case 2:
-						*l23 = green
+            if *l23 == yellow {
+              *l23 = yellowGreen
+            } else {
+              *l23 = blackGreen
+            }
 					case 3:
-						*l24 = green
+            if *l24 == yellow {
+              *l24 = yellowGreen
+            } else {
+              *l24 = blackGreen
+            }
 					case 4:
-						*l25 = green
+            if *l25 == yellow {
+              *l25 = yellowGreen
+            } else {
+              *l25 = blackGreen
+            }
 				}
 			}
 		}
@@ -421,16 +458,36 @@ func Solver() {
 				switch i {
 					default:
 						fmt.Println("failed in row 2")
-					case 0:
-						*l31 = green
+          case 0:
+            if *l31 == yellow {
+              *l31 = yellowGreen
+            } else {
+              *l31 = blackGreen
+            }
 					case 1:
-						*l32 = green
+            if *l32 == yellow {
+              *l32 = yellowGreen
+            } else {
+              *l32 = blackGreen
+            }
 					case 2:
-						*l33 = green
+            if *l33 == yellow {
+              *l33 = yellowGreen
+            } else {
+              *l33 = blackGreen
+            }
 					case 3:
-						*l34 = green
+            if *l34 == yellow {
+              *l34 = yellowGreen
+            } else {
+              *l34 = blackGreen
+            }
 					case 4:
-						*l35 = green
+            if *l35 == yellow {
+              *l35 = yellowGreen
+            } else {
+              *l35 = blackGreen
+            }
 				}
 			}
 		}
@@ -441,16 +498,36 @@ func Solver() {
 				switch i {
 					default:
 						fmt.Println("failed in row 3")
-					case 0:
-						*l41 = green
+          case 0:
+            if *l41 == yellow {
+              *l41 = yellowGreen
+            } else {
+              *l41 = blackGreen
+            }
 					case 1:
-						*l42 = green
+            if *l42 == yellow {
+              *l42 = yellowGreen
+            } else {
+              *l42 = blackGreen
+            }
 					case 2:
-						*l43 = green
+            if *l43 == yellow {
+              *l43 = yellowGreen
+            } else {
+              *l43 = blackGreen
+            }
 					case 3:
-						*l44 = green
+            if *l44 == yellow {
+              *l44 = yellowGreen
+            } else {
+              *l44 = blackGreen
+            }
 					case 4:
-						*l45 = green
+            if *l45 == yellow {
+              *l45 = yellowGreen
+            } else {
+              *l45 = blackGreen
+            }
 				}
 			}
 		}
@@ -461,16 +538,36 @@ func Solver() {
 				switch i {
 					default:
 						fmt.Println("failed in row 4")
-					case 0:
-						*l51 = green
+          case 0:
+            if *l51 == yellow {
+              *l51 = yellowGreen
+            } else {
+              *l51 = blackGreen
+            }
 					case 1:
-						*l52 = green
+            if *l52 == yellow {
+              *l52 = yellowGreen
+            } else {
+              *l52 = blackGreen
+            }
 					case 2:
-						*l53 = green
+            if *l53 == yellow {
+              *l53 = yellowGreen
+            } else {
+              *l53 = blackGreen
+            }
 					case 3:
-						*l54 = green
+            if *l54 == yellow {
+              *l54 = yellowGreen
+            } else {
+              *l54 = blackGreen
+            }
 					case 4:
-						*l55 = green
+            if *l55 == yellow {
+              *l55 = yellowGreen
+            } else {
+              *l55 = blackGreen
+            }
 				}
 			}
 		}
@@ -479,17 +576,37 @@ func Solver() {
 		for i := 0; i < 5; i++ {
 			if row5[i] == yellow {
         if i == 0 {
-          *l14 = green
-          *l15 = green
+          if *l14 == yellow {
+            *l14 = yellowGreen
+          } else {
+            *l14 = blackGreen
+          }
+          if *l15 == yellow {
+            *l15 = yellowGreen
+          } else {
+            *l15 = blackGreen
+          }
           break
         }
         if i == 1 {
-          *l12 = green
-          *l15 = green
+          if *l12 == yellow {
+            *l12 = yellowGreen
+          } else {
+            *l12 = blackGreen
+          }
+          if *l15 == yellow {
+            *l15 = yellowGreen
+          } else {
+            *l15 = blackGreen
+          }
           break
         }
         if i == 2 {
-          *l14 = green
+          if *l14 == yellow {
+            *l14 = yellowGreen
+          } else {
+            *l14 = blackGreen
+          }
           break
         }
         if (i == 4) || (i == 5) {
