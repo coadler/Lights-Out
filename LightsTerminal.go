@@ -82,6 +82,8 @@ const body = `
 
 const solveHTML = `<input type=button onClick="parent.location='solve'" value='Solve row'>`
 
+const resetHTML = `<input type=button onClick="parent.location='reset'" value='Reset puzzle'>`
+
 const tail = `
 	</body>
 </html>
@@ -94,6 +96,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
     urlToTest := url[1:]
     length := utf8.RuneCountInString(urlToTest)
     if err == nil {
+      if urlToTest == "reset" {
+        Reset()
+      }
     	if length == 0 {
 	    	fmt.Fprintf(w, head)
 	   		lights1 := State{l11, l12, l13, l14, l15, "11", "12", "13", "14", "15"}
@@ -107,6 +112,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	   		tmpl.Execute(w, lights4)
 	   		tmpl.Execute(w, lights5)
         fmt.Fprintf(w, solveHTML)
+        fmt.Fprintf(w, resetHTML)
 	   		fmt.Fprintf(w, tail)
    		}
 
@@ -275,8 +281,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	   		tmpl.Execute(w, lights3)
 	   		tmpl.Execute(w, lights4)
 	   		tmpl.Execute(w, lights5)
-   			fmt.Fprintf(w, "You just pressed square %v-%v", url[1:2], url[2:3])
+        if urlToTest != "reset" {
+   			    fmt.Fprintf(w, "You just pressed square %v-%v </br>", url[1:2], url[2:3])
+        }
         fmt.Fprintf(w, solveHTML)
+        fmt.Fprintf(w, resetHTML)
 	   		fmt.Fprintf(w, tail)
    		}
       if urlToTest == "solve" {
@@ -293,6 +302,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         tmpl.Execute(w, lights4)
         tmpl.Execute(w, lights5)
         fmt.Fprintf(w, solveHTML)
+        fmt.Fprintf(w, resetHTML)
         fmt.Fprintf(w, tail)
       }
     }
@@ -302,6 +312,34 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func SwitchColor(color *string, switchGreen bool) {
+  //newColor := color
+    switch *color {
+      default:
+        fmt.Println("Failed to switch color")
+        //fmt.Println(newColor)
+        fmt.Println("Color to change:", color)
+        fmt.Println("Yellow:", yellow)
+        fmt.Println("Black:", black)
+        fmt.Println("YellowGreen:", yellowGreen)
+        fmt.Println("BlackGreen:", blackGreen, "\n")
+      case yellow:
+        *color = black
+      case black:
+        *color = yellow
+      case yellowGreen:
+        if switchGreen {
+          *color = black
+        } else {
+          *color = blackGreen
+        }
+      case blackGreen:
+        if switchGreen {
+          *color = yellow
+        } else {
+          *color = yellowGreen
+        }
+    }
+  /*
 	if *color == yellow {
 		*color = black
 	} else if *color == black {
@@ -317,6 +355,7 @@ func SwitchColor(color *string, switchGreen bool) {
   } else {
     fmt.Println("Failed to switch color")
   }
+  */
 }
 
 func RandColor() (string){
@@ -342,40 +381,30 @@ func FindRow() int{
   yellowCount1, yellowCount2, yellowCount3, yellowCount4, yellowCount5 := 0, 0, 0, 0, 0
   for i := 4; i >= 0; i-- {
     if row1[i] == yellow {
-      //toReturn = 1
-      //fmt.Println("FindRow = 1")
       yellowCount1++
       break
     }
   }
   for i := 4; i >= 0; i-- {
     if row2[i] == yellow {
-      //toReturn = 2
-      //fmt.Println("FindRow = 2")
       yellowCount2++
       break
     }
   }
   for i := 4; i >= 0; i-- {
     if row3[i] == yellow {
-      //toReturn = 3
-      //fmt.Println("FindRow = 3")
       yellowCount3++
       break
     }
   }
   for i := 4; i >= 0; i-- {
     if row4[i] == yellow {
-      //toReturn = 4
-      //fmt.Println("FindRow = 4")
       yellowCount4++
       break
     }
   }
   for i := 4; i >= 0; i-- {
     if row5[i] == yellow {
-      //toReturn = 5
-      //fmt.Println("FindRow = 5")
       yellowCount5++
       break
     }
@@ -620,6 +649,45 @@ func Solver() {
   }
 }
 
+func RandColorP(block *string) {
+	r := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
+	colorNumber := r.Intn(2) + 1;
+
+	switch (colorNumber) {
+		default: 	*block = yellow //"http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
+		case 1:		*block = yellow //"http://cadler.co/wp-content/uploads/2015/09/yellow-e1442941699604.jpg"
+		case 2:		*block = black  //"http://cadler.co/wp-content/uploads/2015/09/black-e1442941689285.jpg"
+	}
+}
+
+func Reset() {
+  	RandColorP(&l11)
+    RandColorP(&l12)
+    RandColorP(&l13)
+    RandColorP(&l14)
+    RandColorP(&l15)
+    RandColorP(&l21)
+    RandColorP(&l22)
+    RandColorP(&l23)
+    RandColorP(&l24)
+    RandColorP(&l25)
+    RandColorP(&l31)
+    RandColorP(&l32)
+    RandColorP(&l33)
+    RandColorP(&l34)
+    RandColorP(&l35)
+    RandColorP(&l41)
+    RandColorP(&l42)
+    RandColorP(&l43)
+    RandColorP(&l44)
+    RandColorP(&l45)
+    RandColorP(&l51)
+    RandColorP(&l52)
+    RandColorP(&l53)
+    RandColorP(&l54)
+    RandColorP(&l55)
+}
+
 func main() {
     http.HandleFunc("/", Index)
     http.HandleFunc("/.*", Index)
@@ -628,5 +696,5 @@ func main() {
 
 // cd /Users/colinadler/GitHub/GoApp
 
-// goapp deploy -application lights-game app.yaml
+// goapp deploy -application lights-outg app.yaml
 // export PATH=/usr/local/go/src/sdk/go_appengine:$PATH
