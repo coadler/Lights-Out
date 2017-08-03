@@ -1,3 +1,5 @@
+note: dont judge me this code is actually terrible and i wrote it more than 2 years ago :D
+
 # Lights Out
 
 This is a game written in my free time, that mimics the handheld version.
